@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -20,7 +21,9 @@ jobs:
           script: |
             cd /home/artertendean/Documents/test/silver-octo-barnacle
             git pull origin main
-            FULL_NAME=$FULL_NAME docker compose build
+            sed -i "s/__FULL_NAME__/$FULL_NAME/g" Dockerfile
+            docker compose build
+            git checkout Dockerfile
             docker compose up -d
         env:
           FULL_NAME: ${{ secrets.FULL_NAME }}
