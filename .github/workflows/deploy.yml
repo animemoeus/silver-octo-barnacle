@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          envs: FULL_NAME
+          script: |
+            cd /home/artertendean/Documents/test/silver-octo-barnacle
+            git pull origin main
+            echo "FULL_NAME=$FULL_NAME" > .env
+            docker compose build
+            docker compose up -d
+        env:
+          FULL_NAME: ${{ secrets.FULL_NAME }}
