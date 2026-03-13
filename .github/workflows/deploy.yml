@@ -20,8 +20,7 @@ jobs:
           script: |
             cd /home/artertendean/Documents/test/silver-octo-barnacle
             git pull origin main
-            echo "FULL_NAME=$FULL_NAME" > .env
-            docker compose build
+            FULL_NAME=$FULL_NAME docker compose build
             docker compose up -d
         env:
           FULL_NAME: ${{ secrets.FULL_NAME }}

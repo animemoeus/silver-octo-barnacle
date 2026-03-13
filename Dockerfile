@@ -15,8 +15,9 @@ RUN npm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
+ARG FULL_NAME
 ENV NODE_ENV=production
-ENV FULL_NAME="Arter"
+ENV FULL_NAME=$FULL_NAME
 
 RUN addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs
